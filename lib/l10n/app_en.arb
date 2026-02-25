@@ -1,0 +1,279 @@
+{
+  "@@locale": "en",
+  "@@last_modified": "2024-01-01T00:00:00.000Z",
+  
+  "appName": "LegalEase",
+  "appTagline": "AI-Powered Legal Document Analysis",
+  
+  "navigation": {
+    "home": "Home",
+    "scan": "Scan Document",
+    "chat": "Chat",
+    "settings": "Settings",
+    "dictionary": "Dictionary",
+    "subscription": "Subscription"
+  },
+  
+  "homeScreen": {
+    "title": "Welcome to LegalEase",
+    "subtitle": "Your AI-powered legal assistant",
+    "scanNewDocument": "Scan New Document",
+    "recentDocuments": "Recent Documents",
+    "noDocuments": "No documents analyzed yet",
+    "quickActions": "Quick Actions"
+  },
+  
+  "documentScan": {
+    "title": "Scan Document",
+    "uploadFromGallery": "Upload from Gallery",
+    "takePhoto": "Take Photo",
+    "uploadPdf": "Upload PDF",
+    "uploadFromCloud": "Upload from Cloud",
+    "analyzing": "Analyzing document...",
+    "analysisComplete": "Analysis Complete",
+    "analysisFailed": "Analysis Failed"
+  },
+  
+  "analysis": {
+    "title": "Analysis Results",
+    "summary": "Summary",
+    "redFlags": "Red Flags",
+    "plainEnglish": "Plain English",
+    "originalText": "Original Text",
+    "noRedFlags": "No red flags detected",
+    "redFlagsFound": "{count} red flags found",
+    "criticalSeverity": "Critical",
+    "warningSeverity": "Warning",
+    "infoSeverity": "Info",
+    "confidence": "Confidence",
+    "highConfidence": "High",
+    "mediumConfidence": "Medium",
+    "lowConfidence": "Low"
+  },
+  
+  "chat": {
+    "title": "Ask Questions",
+    "placeholder": "Ask about your document...",
+    "send": "Send",
+    "typing": "AI is typing...",
+    "suggestedQuestions": "Suggested Questions",
+    "noMessages": "Start a conversation about your document",
+    "voiceInput": "Voice Input"
+  },
+  
+  "dictionary": {
+    "title": "Legal Dictionary",
+    "search": "Search terms...",
+    "noResults": "No terms found",
+    "categories": {
+      "all": "All",
+      "contract": "Contract Law",
+      "tort": "Tort Law",
+      "property": "Property Law",
+      "criminal": "Criminal Law",
+      "constitutional": "Constitutional Law",
+      "civilProcedure": "Civil Procedure",
+      "evidence": "Evidence",
+      "family": "Family Law",
+      "corporate": "Corporate Law",
+      "intellectualProperty": "Intellectual Property",
+      "tax": "Tax Law",
+      "employment": "Employment Law",
+      "realEstate": "Real Estate",
+      "general": "General"
+    }
+  },
+  
+  "export": {
+    "title": "Export",
+    "exportPdf": "Export as PDF",
+    "exportWord": "Export as Word",
+    "exportEmail": "Email to Counsel",
+    "shareAnalysis": "Share Analysis",
+    "exporting": "Exporting...",
+    "exportSuccess": "Export successful",
+    "exportFailed": "Export failed"
+  },
+  
+  "subscription": {
+    "title": "Upgrade to Premium",
+    "currentPlan": "Current Plan",
+    "free": "Free",
+    "premium": "Premium",
+    "premiumFeatures": "Premium Features",
+    "unlimitedScans": "Unlimited document scans",
+    "advancedAnalysis": "Advanced AI analysis",
+    "prioritySupport": "Priority support",
+    "exportOptions": "All export options",
+    "subscribe": "Subscribe Now",
+    "restorePurchases": "Restore Purchases",
+    "manageSubscription": "Manage Subscription"
+  },
+  
+  "auth": {
+    "login": "Login",
+    "signup": "Sign Up",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "forgotPassword": "Forgot Password?",
+    "loginWithGoogle": "Continue with Google",
+    "loginWithApple": "Continue with Apple",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?",
+    "logout": "Logout"
+  },
+  
+  "settings": {
+    "title": "Settings",
+    "account": "Account",
+    "preferences": "Preferences",
+    "language": "Language",
+    "theme": "Theme",
+    "notifications": "Notifications",
+    "privacy": "Privacy",
+    "about": "About",
+    "version": "Version"
+  },
+  
+  "annotations": {
+    "title": "Annotations",
+    "addAnnotation": "Add Annotation",
+    "editAnnotation": "Edit Annotation",
+    "deleteAnnotation": "Delete Annotation",
+    "annotationTypes": {
+      "comment": "Comment",
+      "note": "Note",
+      "highlight": "Highlight",
+      "question": "Question"
+    },
+    "priority": {
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High"
+    },
+    "resolved": "Resolved",
+    "open": "Open",
+    "total": "Total",
+    "noAnnotations": "No annotations yet",
+    "selectTextHint": "Select text in the document to add annotations"
+  },
+  
+  "search": {
+    "title": "Search",
+    "placeholder": "Search documents...",
+    "noResults": "No results found",
+    "recentSearches": "Recent Searches",
+    "filters": "Filters",
+    "filterByDate": "Filter by Date",
+    "filterByType": "Filter by Type",
+    "filterBySeverity": "Filter by Severity"
+  },
+  
+  "comparison": {
+    "title": "Compare Documents",
+    "selectDocuments": "Select two documents to compare",
+    "document1": "Document 1",
+    "document2": "Document 2",
+    "compare": "Compare",
+    "differences": "Differences",
+    "additions": "Additions",
+    "deletions": "Deletions",
+    "noDifferences": "No differences found"
+  },
+  
+  "templates": {
+    "title": "Templates",
+    "nda": "Non-Disclosure Agreement",
+    "employmentAgreement": "Employment Agreement",
+    "serviceContract": "Service Contract",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service",
+    "leaseAgreement": "Lease Agreement",
+    "preview": "Preview",
+    "useTemplate": "Use Template",
+    "customize": "Customize"
+  },
+  
+  "sharing": {
+    "title": "Share Analysis",
+    "generateLink": "Generate Share Link",
+    "linkExpires": "Link Expires",
+    "passwordProtection": "Password Protection",
+    "copyLink": "Copy Link",
+    "shareViaEmail": "Share via Email",
+    "qrCode": "QR Code"
+  },
+  
+  "cloudStorage": {
+    "title": "Cloud Storage",
+    "connectAccount": "Connect Account",
+    "googleDrive": "Google Drive",
+    "dropbox": "Dropbox",
+    "oneDrive": "OneDrive",
+    "connected": "Connected",
+    "disconnect": "Disconnect",
+    "browseFiles": "Browse Files",
+    "syncSettings": "Sync Settings"
+  },
+  
+  "offline": {
+    "offlineMode": "Offline Mode",
+    "offlineMessage": "You are currently offline. Some features may be limited.",
+    "syncPending": "Sync Pending Changes",
+    "lastSynced": "Last Synced"
+  },
+  
+  "team": {
+    "title": "Team Workspace",
+    "createTeam": "Create Team",
+    "joinTeam": "Join Team",
+    "teamMembers": "Team Members",
+    "inviteMember": "Invite Member",
+    "teamDocuments": "Team Documents",
+    "roles": {
+      "admin": "Admin",
+      "member": "Member",
+      "viewer": "Viewer"
+    }
+  },
+  
+  "reminders": {
+    "title": "Reminders",
+    "addReminder": "Add Reminder",
+    "contractDeadline": "Contract Deadline",
+    "renewalDate": "Renewal Date",
+    "expirationDate": "Expiration Date",
+    "notificationTime": "Notification Time",
+    "noReminders": "No reminders set"
+  },
+  
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "done": "Done",
+    "next": "Next",
+    "previous": "Previous",
+    "close": "Close",
+    "confirm": "Confirm",
+    "retry": "Retry",
+    "yes": "Yes",
+    "no": "No",
+    "ok": "OK"
+  },
+  
+  "errors": {
+    "generic": "Something went wrong",
+    "networkError": "Network error. Please check your connection.",
+    "authError": "Authentication failed",
+    "permissionDenied": "Permission denied",
+    "fileNotFound": "File not found",
+    "invalidFile": "Invalid file format",
+    "analysisFailed": "Analysis failed. Please try again."
+  }
+}

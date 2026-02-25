@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LegalEase</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            width: 320px;
+            padding: 20px;
+            background: #f8fafc;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .logo {
+            font-size: 28px;
+        }
+        .title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+        .subtitle {
+            font-size: 12px;
+            color: #64748b;
+        }
+        .status-card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #22c55e;
+        }
+        .status-dot.warning {
+            background: #f59e0b;
+        }
+        .status-text {
+            font-size: 14px;
+            color: #334155;
+        }
+        .analyze-btn {
+            width: 100%;
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .analyze-btn:hover {
+            background: #1d4ed8;
+        }
+        .analyze-btn:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+        }
+        .options {
+            margin-top: 16px;
+        }
+        .option-btn {
+            width: 100%;
+            background: white;
+            border: 1px solid #e2e8f0;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #334155;
+            cursor: pointer;
+            margin-bottom: 8px;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .option-btn:hover {
+            background: #f1f5f9;
+        }
+        .option-icon {
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <span class="logo">🛡️</span>
+        <div>
+            <div class="title">LegalEase</div>
+            <div class="subtitle">AI Legal Assistant</div>
+        </div>
+    </div>
+    
+    <div class="status-card">
+        <div class="status-indicator">
+            <span class="status-dot" id="statusDot"></span>
+            <span class="status-text" id="statusText">Checking page...</span>
+        </div>
+    </div>
+    
+    <button class="analyze-btn" id="analyzeBtn">
+        Analyze This Page
+    </button>
+    
+    <div class="options">
+        <button class="option-btn" id="redFlagsBtn">
+            <span class="option-icon">⚠️</span>
+            Check for Red Flags
+        </button>
+        <button class="option-btn" id="translateBtn">
+            <span class="option-icon">📖</span>
+            Plain English Translation
+        </button>
+        <button class="option-btn" id="summarizeBtn">
+            <span class="option-icon">📝</span>
+            Quick Summary
+        </button>
+    </div>
+    
+    <script src="popup.js"></script>
+</body>
+</html>

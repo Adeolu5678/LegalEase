@@ -1,0 +1,213 @@
+name: Build Desktop
+
+on:
+  push:
+    branches:
+      - main
+      - master
+    tags:
+      - 'v*'
+  workflow_dispatch:
+  release:
+    types: [published]
+
+env:
+  FLUTTER_VERSION: '3.24.0'
+
+jobs:
+  build:
+    name: Build ${{ matrix.platform }}
+    runs-on: ${{ matrix.runner }}
+    
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: windows
+            runner: windows-latest
+            build_path: build/windows/x64/runner/Release
+            artifact_name: LegalEase-Windows
+          - platform: macos
+            runner: macos-latest
+            build_path: build/macos/Build/Products/Release
+            artifact_name: LegalEase-macOS
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'stable'
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      # Windows Build Steps
+      - name: Build Windows
+        if: matrix.platform == 'windows'
+        run: flutter build windows --release
+
+      - name: Create Windows ZIP archive
+        if: matrix.platform == 'windows'
+        run: |
+          cd build/windows/x64/runner/Release
+          7z a -tzip ${{ matrix.artifact_name }}-${{ github.ref_name }}.zip *
+          mv ${{ matrix.artifact_name }}-${{ github.ref_name }}.zip ${{ github.workspace }}/
+
+      - name: Upload Windows artifact
+        if: matrix.platform == 'windows'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact_name }}
+          path: ${{ matrix.artifact_name }}-${{ github.ref_name }}.zip
+          retention-days: 30
+
+      # macOS Build Steps
+      # Required secrets for macOS code signing and notarization:
+      # - MACOS_CERTIFICATE_BASE64: Base64 encoded macOS distribution certificate (.p12)
+      # - MACOS_CERTIFICATE_PASSWORD: Password for the certificate
+      # - MACOS_PROVISIONING_PROFILE_BASE64: Base64 encoded provisioning profile
+      # - APPLE_ID: Apple ID email for notarization
+      # - APPLE_PASSWORD: App-specific password for Apple ID (from appleid.apple.com)
+      # - APPLE_TEAM_ID: Apple Developer Team ID
+      
+      - name: Decode Firebase config for macOS
+        if: matrix.platform == 'macos'
+        env:
+          FIREBASE_MACOS_CONFIG: ${{ secrets.FIREBASE_MACOS_CONFIG }}
+          FIREBASE_IOS_CONFIG: ${{ secrets.FIREBASE_IOS_CONFIG }}
+        run: |
+          if [ -n "$FIREBASE_MACOS_CONFIG" ]; then
+            echo "$FIREBASE_MACOS_CONFIG" | base64 --decode > macos/Runner/GoogleService-Info.plist
+          elif [ -n "$FIREBASE_IOS_CONFIG" ]; then
+            echo "$FIREBASE_IOS_CONFIG" | base64 --decode > macos/Runner/GoogleService-Info.plist
+          fi
+
+      - name: Build macOS
+        if: matrix.platform == 'macos'
+        run: flutter build macos --release
+
+      - name: Install Apple certificate
+        if: matrix.platform == 'macos' && github.event_name != 'pull_request'
+        env:
+          MACOS_CERTIFICATE_BASE64: ${{ secrets.MACOS_CERTIFICATE_BASE64 }}
+          MACOS_CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
+          MACOS_PROVISIONING_PROFILE_BASE64: ${{ secrets.MACOS_PROVISIONING_PROFILE_BASE64 }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: |
+          # Create temporary keychain
+          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+          KEYCHAIN_PASSWORD=$(openssl rand -hex 32)
+          
+          security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          
+          # Import certificate
+          CERTIFICATE_PATH=$RUNNER_TEMP/certificate.p12
+          echo -n "$MACOS_CERTIFICATE_BASE64" | base64 --decode -o "$CERTIFICATE_PATH"
+          security import "$CERTIFICATE_PATH" -P "$MACOS_CERTIFICATE_PASSWORD" -A -t cert -f pkcs12 -k "$KEYCHAIN_PATH"
+          security list-keychain -d user -s "$KEYCHAIN_PATH"
+          
+          # Install provisioning profile
+          PROFILE_PATH=$RUNNER_TEMP/profile.provisionprofile
+          echo -n "$MACOS_PROVISIONING_PROFILE_BASE64" | base64 --decode -o "$PROFILE_PATH"
+          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+          cp "$PROFILE_PATH" ~/Library/MobileDevice/Provisioning\ Profiles/
+
+      - name: Code sign macOS app
+        if: matrix.platform == 'macos' && github.event_name != 'pull_request'
+        env:
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: |
+          APP_PATH="build/macos/Build/Products/Release/legalease.app"
+          
+          # Sign the app
+          codesign --force --deep --sign "Developer ID Application: $APPLE_TEAM_ID" \
+            --options runtime \
+            --entitlements macos/Runner/DebugProfile.entitlements \
+            --timestamp \
+            "$APP_PATH"
+          
+          # Verify signing
+          codesign --verify --deep --strict --verbose=2 "$APP_PATH"
+
+      - name: Create macOS ZIP archive
+        if: matrix.platform == 'macos'
+        run: |
+          cd build/macos/Build/Products/Release
+          ditto -c -k --keepParent legalease.app ${{ matrix.artifact_name }}-${{ github.ref_name }}.zip
+          mv ${{ matrix.artifact_name }}-${{ github.ref_name }}.zip ${{ github.workspace }}/
+
+      - name: Notarize macOS app
+        if: matrix.platform == 'macos' && github.event_name != 'pull_request'
+        env:
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: |
+          ZIP_PATH="${{ github.workspace }}/${{ matrix.artifact_name }}-${{ github.ref_name }}.zip"
+          
+          # Submit for notarization
+          xcrun notarytool submit "$ZIP_PATH" \
+            --apple-id "$APPLE_ID" \
+            --password "$APPLE_PASSWORD" \
+            --team-id "$APPLE_TEAM_ID" \
+            --wait \
+            --timeout 30m
+          
+          # Staple the notarization ticket
+          APP_PATH="build/macos/Build/Products/Release/legalease.app"
+          xcrun stapler staple "$APP_PATH"
+          
+          # Recreate ZIP with stapled app
+          cd build/macos/Build/Products/Release
+          rm -f ${{ matrix.artifact_name }}-${{ github.ref_name }}.zip
+          ditto -c -k --keepParent legalease.app ${{ matrix.artifact_name }}-${{ github.ref_name }}.zip
+          mv ${{ matrix.artifact_name }}-${{ github.ref_name }}.zip ${{ github.workspace }}/
+
+      - name: Upload macOS artifact
+        if: matrix.platform == 'macos'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact_name }}
+          path: ${{ matrix.artifact_name }}-${{ github.ref_name }}.zip
+          retention-days: 30
+
+      - name: Clean up keychain
+        if: matrix.platform == 'macos' && always()
+        run: |
+          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+          if [ -f "$KEYCHAIN_PATH" ]; then
+            security delete-keychain "$KEYCHAIN_PATH" || true
+          fi
+
+  # Optional: Create a release with artifacts
+  release:
+    name: Create Release
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    
+    steps:
+      - name: Download Windows artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: LegalEase-Windows
+          path: artifacts/
+
+      - name: Download macOS artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: LegalEase-macOS
+          path: artifacts/
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: artifacts/*.zip
+          generate_release_notes: true

@@ -1,0 +1,279 @@
+{
+  "@@locale": "de",
+  "@@last_modified": "2024-01-01T00:00:00.000Z",
+  
+  "appName": "LegalEase",
+  "appTagline": "KI-gestützte Rechtsdokumentenanalyse",
+  
+  "navigation": {
+    "home": "Startseite",
+    "scan": "Dokument Scannen",
+    "chat": "Chat",
+    "settings": "Einstellungen",
+    "dictionary": "Wörterbuch",
+    "subscription": "Abonnement"
+  },
+  
+  "homeScreen": {
+    "title": "Willkommen bei LegalEase",
+    "subtitle": "Ihr KI-gestützter Rechtsassistent",
+    "scanNewDocument": "Neues Dokument Scannen",
+    "recentDocuments": "Aktuelle Dokumente",
+    "noDocuments": "Noch keine Dokumente analysiert",
+    "quickActions": "Schnellaktionen"
+  },
+  
+  "documentScan": {
+    "title": "Dokument Scannen",
+    "uploadFromGallery": "Aus Galerie Hochladen",
+    "takePhoto": "Foto Aufnehmen",
+    "uploadPdf": "PDF Hochladen",
+    "uploadFromCloud": "Aus Cloud Hochladen",
+    "analyzing": "Dokument wird analysiert...",
+    "analysisComplete": "Analyse Abgeschlossen",
+    "analysisFailed": "Analyse Fehlgeschlagen"
+  },
+  
+  "analysis": {
+    "title": "Analyseergebnisse",
+    "summary": "Zusammenfassung",
+    "redFlags": "Warnungen",
+    "plainEnglish": "Einfache Sprache",
+    "originalText": "Originaltext",
+    "noRedFlags": "Keine Warnungen erkannt",
+    "redFlagsFound": "{count} Warnungen gefunden",
+    "criticalSeverity": "Kritisch",
+    "warningSeverity": "Warnung",
+    "infoSeverity": "Info",
+    "confidence": "Konfidenz",
+    "highConfidence": "Hoch",
+    "mediumConfidence": "Mittel",
+    "lowConfidence": "Niedrig"
+  },
+  
+  "chat": {
+    "title": "Fragen Stellen",
+    "placeholder": "Fragen Sie zu Ihrem Dokument...",
+    "send": "Senden",
+    "typing": "KI schreibt...",
+    "suggestedQuestions": "Vorgeschlagene Fragen",
+    "noMessages": "Starten Sie eine Konversation über Ihr Dokument",
+    "voiceInput": "Spracheingabe"
+  },
+  
+  "dictionary": {
+    "title": "Juristisches Wörterbuch",
+    "search": "Begriffe suchen...",
+    "noResults": "Keine Begriffe gefunden",
+    "categories": {
+      "all": "Alle",
+      "contract": "Vertragsrecht",
+      "tort": "Deliktsrecht",
+      "property": "Sachenrecht",
+      "criminal": "Strafrecht",
+      "constitutional": "Verfassungsrecht",
+      "civilProcedure": "Zivilprozessrecht",
+      "evidence": "Beweisrecht",
+      "family": "Familienrecht",
+      "corporate": "Gesellschaftsrecht",
+      "intellectualProperty": "Geistiges Eigentum",
+      "tax": "Steuerrecht",
+      "employment": "Arbeitsrecht",
+      "realEstate": "Immobilienrecht",
+      "general": "Allgemein"
+    }
+  },
+  
+  "export": {
+    "title": "Exportieren",
+    "exportPdf": "Als PDF Exportieren",
+    "exportWord": "Als Word Exportieren",
+    "exportEmail": "Per E-Mail Senden",
+    "shareAnalysis": "Analyse Teilen",
+    "exporting": "Wird exportiert...",
+    "exportSuccess": "Export erfolgreich",
+    "exportFailed": "Export fehlgeschlagen"
+  },
+  
+  "subscription": {
+    "title": "Auf Premium Upgraden",
+    "currentPlan": "Aktueller Plan",
+    "free": "Kostenlos",
+    "premium": "Premium",
+    "premiumFeatures": "Premium-Funktionen",
+    "unlimitedScans": "Unbegrenzte Dokumentenscans",
+    "advancedAnalysis": "Erweiterte KI-Analyse",
+    "prioritySupport": "Prioritäts-Support",
+    "exportOptions": "Alle Exportoptionen",
+    "subscribe": "Jetzt Abonnieren",
+    "restorePurchases": "Käufe Wiederherstellen",
+    "manageSubscription": "Abonnement Verwalten"
+  },
+  
+  "auth": {
+    "login": "Anmelden",
+    "signup": "Registrieren",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "confirmPassword": "Passwort Bestätigen",
+    "forgotPassword": "Passwort vergessen?",
+    "loginWithGoogle": "Mit Google Fortsetzen",
+    "loginWithApple": "Mit Apple Fortsetzen",
+    "noAccount": "Kein Konto?",
+    "hasAccount": "Bereits ein Konto?",
+    "logout": "Abmelden"
+  },
+  
+  "settings": {
+    "title": "Einstellungen",
+    "account": "Konto",
+    "preferences": "Präferenzen",
+    "language": "Sprache",
+    "theme": "Design",
+    "notifications": "Benachrichtigungen",
+    "privacy": "Datenschutz",
+    "about": "Über",
+    "version": "Version"
+  },
+  
+  "annotations": {
+    "title": "Anmerkungen",
+    "addAnnotation": "Anmerkung Hinzufügen",
+    "editAnnotation": "Anmerkung Bearbeiten",
+    "deleteAnnotation": "Anmerkung Löschen",
+    "annotationTypes": {
+      "comment": "Kommentar",
+      "note": "Notiz",
+      "highlight": "Hervorheben",
+      "question": "Frage"
+    },
+    "priority": {
+      "low": "Niedrig",
+      "medium": "Mittel",
+      "high": "Hoch"
+    },
+    "resolved": "Gelöst",
+    "open": "Offen",
+    "total": "Gesamt",
+    "noAnnotations": "Noch keine Anmerkungen",
+    "selectTextHint": "Markieren Sie Text im Dokument um Anmerkungen hinzuzufügen"
+  },
+  
+  "search": {
+    "title": "Suchen",
+    "placeholder": "Dokumente suchen...",
+    "noResults": "Keine Ergebnisse gefunden",
+    "recentSearches": "Aktuelle Suchen",
+    "filters": "Filter",
+    "filterByDate": "Nach Datum Filtern",
+    "filterByType": "Nach Typ Filtern",
+    "filterBySeverity": "Nach Schwere Filtern"
+  },
+  
+  "comparison": {
+    "title": "Dokumente Vergleichen",
+    "selectDocuments": "Wählen Sie zwei Dokumente zum Vergleichen",
+    "document1": "Dokument 1",
+    "document2": "Dokument 2",
+    "compare": "Vergleichen",
+    "differences": "Unterschiede",
+    "additions": "Hinzufügungen",
+    "deletions": "Löschungen",
+    "noDifferences": "Keine Unterschiede gefunden"
+  },
+  
+  "templates": {
+    "title": "Vorlagen",
+    "nda": "Geheimhaltungsvertrag",
+    "employmentAgreement": "Arbeitsvertrag",
+    "serviceContract": "Dienstleistungsvertrag",
+    "privacyPolicy": "Datenschutzerklärung",
+    "termsOfService": "Nutzungsbedingungen",
+    "leaseAgreement": "Mietvertrag",
+    "preview": "Vorschau",
+    "useTemplate": "Vorlage Verwenden",
+    "customize": "Anpassen"
+  },
+  
+  "sharing": {
+    "title": "Analyse Teilen",
+    "generateLink": "Link Generieren",
+    "linkExpires": "Link Läuft Ab",
+    "passwordProtection": "Passwortschutz",
+    "copyLink": "Link Kopieren",
+    "shareViaEmail": "Per E-Mail Teilen",
+    "qrCode": "QR-Code"
+  },
+  
+  "cloudStorage": {
+    "title": "Cloud-Speicher",
+    "connectAccount": "Konto Verbinden",
+    "googleDrive": "Google Drive",
+    "dropbox": "Dropbox",
+    "oneDrive": "OneDrive",
+    "connected": "Verbunden",
+    "disconnect": "Trennen",
+    "browseFiles": "Dateien Durchsuchen",
+    "syncSettings": "Synchronisationseinstellungen"
+  },
+  
+  "offline": {
+    "offlineMode": "Offline-Modus",
+    "offlineMessage": "Sie sind derzeit offline. Einige Funktionen sind möglicherweise eingeschränkt.",
+    "syncPending": "Ausstehende Änderungen Synchronisieren",
+    "lastSynced": "Zuletzt Synchronisiert"
+  },
+  
+  "team": {
+    "title": "Team-Arbeitsbereich",
+    "createTeam": "Team Erstellen",
+    "joinTeam": "Team Beitreten",
+    "teamMembers": "Teammitglieder",
+    "inviteMember": "Mitglied Einladen",
+    "teamDocuments": "Team-Dokumente",
+    "roles": {
+      "admin": "Admin",
+      "member": "Mitglied",
+      "viewer": "Betrachter"
+    }
+  },
+  
+  "reminders": {
+    "title": "Erinnerungen",
+    "addReminder": "Erinnerung Hinzufügen",
+    "contractDeadline": "Vertragsfrist",
+    "renewalDate": "Verlängerungsdatum",
+    "expirationDate": "Ablaufdatum",
+    "notificationTime": "Benachrichtigungszeit",
+    "noReminders": "Keine Erinnerungen festgelegt"
+  },
+  
+  "common": {
+    "loading": "Wird geladen...",
+    "error": "Fehler",
+    "success": "Erfolg",
+    "cancel": "Abbrechen",
+    "save": "Speichern",
+    "delete": "Löschen",
+    "edit": "Bearbeiten",
+    "done": "Fertig",
+    "next": "Weiter",
+    "previous": "Zurück",
+    "close": "Schließen",
+    "confirm": "Bestätigen",
+    "retry": "Wiederholen",
+    "yes": "Ja",
+    "no": "Nein",
+    "ok": "OK"
+  },
+  
+  "errors": {
+    "generic": "Etwas ist schiefgelaufen",
+    "networkError": "Netzwerkfehler. Bitte überprüfen Sie Ihre Verbindung.",
+    "authError": "Authentifizierung fehlgeschlagen",
+    "permissionDenied": "Berechtigung verweigert",
+    "fileNotFound": "Datei nicht gefunden",
+    "invalidFile": "Ungültiges Dateiformat",
+    "analysisFailed": "Analyse fehlgeschlagen. Bitte versuchen Sie es erneut."
+  }
+}

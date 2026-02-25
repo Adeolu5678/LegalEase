@@ -1,0 +1,429 @@
+name: Release
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (e.g., 1.0.0)'
+        required: false
+        type: string
+      skip_stores:
+        description: 'Skip store uploads (only create GitHub release)'
+        required: false
+        type: boolean
+        default: false
+
+env:
+  FLUTTER_VERSION: '3.x'
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      version_name: ${{ steps.version.outputs.version_name }}
+      version_code: ${{ steps.version.outputs.version_code }}
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Extract version
+        id: version
+        run: |
+          if [ -n "${{ github.event.release.tag_name }}" ]; then
+            VERSION="${{ github.event.release.tag_name }}"
+            VERSION="${VERSION#v}"
+          elif [ -n "${{ inputs.version }}" ]; then
+            VERSION="${{ inputs.version }}"
+          else
+            VERSION=$(grep '^version:' pubspec.yaml | sed 's/version: //')
+          fi
+          
+          VERSION_NAME=$(echo "$VERSION" | cut -d'+' -f1)
+          VERSION_CODE=$(echo "$VERSION" | cut -d'+' -f2)
+          [ -z "$VERSION_CODE" ] && VERSION_CODE=1
+          
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "version_name=$VERSION_NAME" >> $GITHUB_OUTPUT
+          echo "version_code=$VERSION_CODE" >> $GITHUB_OUTPUT
+          
+          echo "::notice::Building version $VERSION_NAME (build $VERSION_CODE)"
+
+  build-android:
+    needs: prepare
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Cache Gradle
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: gradle-${{ runner.os }}-
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Setup keystore
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          ANDROID_KEY_PROPERTIES: ${{ secrets.ANDROID_KEY_PROPERTIES }}
+        run: |
+          echo "$ANDROID_KEYSTORE_BASE64" | base64 --decode > android/app/keystore.jks
+          echo "$ANDROID_KEY_PROPERTIES" > android/key.properties
+
+      - name: Build APK
+        run: flutter build apk --release --build-name=${{ needs.prepare.outputs.version_name }} --build-number=${{ needs.prepare.outputs.version_code }}
+
+      - name: Build App Bundle
+        run: flutter build appbundle --release --build-name=${{ needs.prepare.outputs.version_name }} --build-number=${{ needs.prepare.outputs.version_code }}
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+          retention-days: 30
+
+      - name: Upload App Bundle artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-aab
+          path: build/app/outputs/bundle/release/app-release.aab
+          retention-days: 30
+
+  build-ios:
+    needs: prepare
+    runs-on: macos-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Cache CocoaPods
+        uses: actions/cache@v4
+        with:
+          path: ios/Pods
+          key: pods-${{ runner.os }}-${{ hashFiles('ios/Podfile.lock') }}
+          restore-keys: pods-${{ runner.os }}-
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Install CocoaPods dependencies
+        run: cd ios && pod install
+
+      - name: Build iOS (no codesign)
+        run: flutter build ios --release --no-codesign --build-name=${{ needs.prepare.outputs.version_name }} --build-number=${{ needs.prepare.outputs.version_code }}
+
+      - name: Archive iOS
+        run: |
+          cd build/ios/iphoneos
+          zip -r ../../../LegalEase-iOS.zip Runner.app
+
+      - name: Upload iOS artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-app
+          path: LegalEase-iOS.zip
+          retention-days: 30
+
+  build-web:
+    needs: prepare
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build Web
+        run: flutter build web --release
+
+      - name: Archive Web
+        run: |
+          cd build
+          zip -r ../LegalEase-Web.zip web
+
+      - name: Upload Web artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-app
+          path: LegalEase-Web.zip
+          retention-days: 30
+
+  build-windows:
+    needs: prepare
+    runs-on: windows-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build Windows
+        run: flutter build windows --release
+
+      - name: Archive Windows
+        run: Compress-Archive -Path build\windows\x64\runner\Release\* -DestinationPath LegalEase-Windows.zip
+
+      - name: Upload Windows artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-app
+          path: LegalEase-Windows.zip
+          retention-days: 30
+
+  build-macos:
+    needs: prepare
+    runs-on: macos-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build macOS
+        run: flutter build macos --release
+
+      - name: Archive macOS
+        run: |
+          cd build/macos/Build/Products/Release
+          zip -r ../../../../../LegalEase-macOS.zip "legalease.app"
+
+      - name: Upload macOS artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-app
+          path: LegalEase-macOS.zip
+          retention-days: 30
+
+  create-release:
+    needs: [prepare, build-android, build-ios, build-web, build-windows, build-macos]
+    runs-on: ubuntu-latest
+    if: always() && !contains(needs.*.result, 'failure')
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Prepare release assets
+        run: |
+          mkdir -p release-assets
+          
+          if [ -f artifacts/android-apk/app-release.apk ]; then
+            cp artifacts/android-apk/app-release.apk release-assets/LegalEase-${{ needs.prepare.outputs.version_name }}.apk
+          fi
+          
+          if [ -f artifacts/android-aab/app-release.aab ]; then
+            cp artifacts/android-aab/app-release.aab release-assets/LegalEase-${{ needs.prepare.outputs.version_name }}.aab
+          fi
+          
+          if [ -f artifacts/ios-app/LegalEase-iOS.zip ]; then
+            cp artifacts/ios-app/LegalEase-iOS.zip release-assets/LegalEase-${{ needs.prepare.outputs.version_name }}-iOS.zip
+          fi
+          
+          if [ -f artifacts/web-app/LegalEase-Web.zip ]; then
+            cp artifacts/web-app/LegalEase-Web.zip release-assets/LegalEase-${{ needs.prepare.outputs.version_name }}-Web.zip
+          fi
+          
+          if [ -f artifacts/windows-app/LegalEase-Windows.zip ]; then
+            cp artifacts/windows-app/LegalEase-Windows.zip release-assets/LegalEase-${{ needs.prepare.outputs.version_name }}-Windows.zip
+          fi
+          
+          if [ -f artifacts/macos-app/LegalEase-macOS.zip ]; then
+            cp artifacts/macos-app/LegalEase-macOS.zip release-assets/LegalEase-${{ needs.prepare.outputs.version_name }}-macOS.zip
+          fi
+          
+          ls -la release-assets/
+
+      - name: Create GitHub Release
+        if: github.event_name != 'release'
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v${{ needs.prepare.outputs.version_name }}
+          name: Release v${{ needs.prepare.outputs.version_name }}
+          body: |
+            ## LegalEase v${{ needs.prepare.outputs.version_name }}
+            
+            ### Downloads
+            | Platform | File |
+            |----------|------|
+            | Android APK | LegalEase-${{ needs.prepare.outputs.version_name }}.apk |
+            | Android App Bundle | LegalEase-${{ needs.prepare.outputs.version_name }}.aab |
+            | iOS | LegalEase-${{ needs.prepare.outputs.version_name }}-iOS.zip |
+            | Web | LegalEase-${{ needs.prepare.outputs.version_name }}-Web.zip |
+            | Windows | LegalEase-${{ needs.prepare.outputs.version_name }}-Windows.zip |
+            | macOS | LegalEase-${{ needs.prepare.outputs.version_name }}-macOS.zip |
+            
+            ### What's Changed
+            See [CHANGELOG.md](CHANGELOG.md) for details.
+          files: release-assets/*
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update existing release
+        if: github.event_name == 'release'
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.event.release.tag_name }}
+          files: release-assets/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  deploy-google-play:
+    needs: [prepare, build-android, create-release]
+    runs-on: ubuntu-latest
+    if: inputs.skip_stores != true && github.event_name == 'release'
+    
+    steps:
+      - name: Download App Bundle
+        uses: actions/download-artifact@v4
+        with:
+          name: android-aab
+          path: .
+
+      - name: Deploy to Google Play
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
+          packageName: com.legalease.app
+          releaseFiles: app-release.aab
+          track: internal
+          status: completed
+        continue-on-error: true
+
+  deploy-app-store:
+    needs: [prepare, build-ios, create-release]
+    runs-on: macos-latest
+    if: inputs.skip_stores != true && github.event_name == 'release'
+    
+    steps:
+      - name: Download iOS artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ios-app
+          path: .
+
+      - name: Setup App Store Connect
+        env:
+          APP_STORE_CONNECT_API_KEY: ${{ secrets.APP_STORE_CONNECT_API_KEY }}
+          APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+          APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+        run: |
+          echo "$APP_STORE_CONNECT_API_KEY" > AuthKey_${APP_STORE_CONNECT_KEY_ID}.p8
+          xcrun altool --upload-app -f LegalEase-iOS.zip \
+            --apiKey "$APP_STORE_CONNECT_KEY_ID" \
+            --apiIssuer "$APP_STORE_CONNECT_ISSUER_ID" || echo "iOS deployment requires additional setup"
+        continue-on-error: true
+
+  deploy-web:
+    needs: [prepare, build-web, create-release]
+    runs-on: ubuntu-latest
+    if: inputs.skip_stores != true
+    
+    steps:
+      - name: Download Web artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: web-app
+          path: .
+
+      - name: Extract web build
+        run: unzip LegalEase-Web.zip -d web-build
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./web-build
+          publish_branch: gh-pages
+        continue-on-error: true
+
+  notify:
+    needs: [create-release, deploy-google-play, deploy-app-store, deploy-web]
+    runs-on: ubuntu-latest
+    if: always()
+    
+    steps:
+      - name: Determine status
+        id: status
+        run: |
+          if [ "${{ needs.create-release.result }}" == "success" ]; then
+            echo "status=success" >> $GITHUB_OUTPUT
+            echo "message=Release completed successfully" >> $GITHUB_OUTPUT
+          else
+            echo "status=failure" >> $GITHUB_OUTPUT
+            echo "message=Release failed" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Send notification
+        if: secrets.SLACK_WEBHOOK_URL != ''
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ steps.status.outputs.status }}
+          text: ${{ steps.status.outputs.message }}
+          webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
+        continue-on-error: true

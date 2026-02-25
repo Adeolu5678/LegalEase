@@ -1,0 +1,279 @@
+{
+  "@@locale": "pt",
+  "@@last_modified": "2024-01-01T00:00:00.000Z",
+  
+  "appName": "LegalEase",
+  "appTagline": "Análise de Documentos Jurídicos com IA",
+  
+  "navigation": {
+    "home": "Início",
+    "scan": "Escanear Documento",
+    "chat": "Chat",
+    "settings": "Configurações",
+    "dictionary": "Dicionário",
+    "subscription": "Assinatura"
+  },
+  
+  "homeScreen": {
+    "title": "Bem-vindo ao LegalEase",
+    "subtitle": "Seu assistente jurídico com IA",
+    "scanNewDocument": "Escanear Novo Documento",
+    "recentDocuments": "Documentos Recentes",
+    "noDocuments": "Nenhum documento analisado ainda",
+    "quickActions": "Ações Rápidas"
+  },
+  
+  "documentScan": {
+    "title": "Escanear Documento",
+    "uploadFromGallery": "Carregar da Galeria",
+    "takePhoto": "Tirar Foto",
+    "uploadPdf": "Carregar PDF",
+    "uploadFromCloud": "Carregar da Nuvem",
+    "analyzing": "Analisando documento...",
+    "analysisComplete": "Análise Concluída",
+    "analysisFailed": "Análise Falhou"
+  },
+  
+  "analysis": {
+    "title": "Resultados da Análise",
+    "summary": "Resumo",
+    "redFlags": "Alertas",
+    "plainEnglish": "Linguagem Simples",
+    "originalText": "Texto Original",
+    "noRedFlags": "Nenhum alerta detectado",
+    "redFlagsFound": "{count} alertas encontrados",
+    "criticalSeverity": "Crítico",
+    "warningSeverity": "Aviso",
+    "infoSeverity": "Informação",
+    "confidence": "Confiança",
+    "highConfidence": "Alta",
+    "mediumConfidence": "Média",
+    "lowConfidence": "Baixa"
+  },
+  
+  "chat": {
+    "title": "Fazer Perguntas",
+    "placeholder": "Pergunte sobre seu documento...",
+    "send": "Enviar",
+    "typing": "A IA está digitando...",
+    "suggestedQuestions": "Perguntas Sugeridas",
+    "noMessages": "Inicie uma conversa sobre seu documento",
+    "voiceInput": "Entrada de Voz"
+  },
+  
+  "dictionary": {
+    "title": "Dicionário Jurídico",
+    "search": "Buscar termos...",
+    "noResults": "Nenhum termo encontrado",
+    "categories": {
+      "all": "Todos",
+      "contract": "Direito Contratual",
+      "tort": "Direito de Responsabilidade Civil",
+      "property": "Direito de Propriedade",
+      "criminal": "Direito Penal",
+      "constitutional": "Direito Constitucional",
+      "civilProcedure": "Processo Civil",
+      "evidence": "Provas",
+      "family": "Direito de Família",
+      "corporate": "Direito Corporativo",
+      "intellectualProperty": "Propriedade Intelectual",
+      "tax": "Direito Tributário",
+      "employment": "Direito do Trabalho",
+      "realEstate": "Imóveis",
+      "general": "Geral"
+    }
+  },
+  
+  "export": {
+    "title": "Exportar",
+    "exportPdf": "Exportar como PDF",
+    "exportWord": "Exportar como Word",
+    "exportEmail": "Enviar por Email",
+    "shareAnalysis": "Compartilhar Análise",
+    "exporting": "Exportando...",
+    "exportSuccess": "Exportação bem-sucedida",
+    "exportFailed": "Exportação falhou"
+  },
+  
+  "subscription": {
+    "title": "Atualizar para Premium",
+    "currentPlan": "Plano Atual",
+    "free": "Grátis",
+    "premium": "Premium",
+    "premiumFeatures": "Recursos Premium",
+    "unlimitedScans": "Escaneamentos ilimitados",
+    "advancedAnalysis": "Análise avançada com IA",
+    "prioritySupport": "Suporte prioritário",
+    "exportOptions": "Todas as opções de exportação",
+    "subscribe": "Assinar Agora",
+    "restorePurchases": "Restaurar Compras",
+    "manageSubscription": "Gerenciar Assinatura"
+  },
+  
+  "auth": {
+    "login": "Entrar",
+    "signup": "Cadastrar",
+    "email": "Email",
+    "password": "Senha",
+    "confirmPassword": "Confirmar Senha",
+    "forgotPassword": "Esqueceu a senha?",
+    "loginWithGoogle": "Continuar com Google",
+    "loginWithApple": "Continuar com Apple",
+    "noAccount": "Não tem conta?",
+    "hasAccount": "Já tem uma conta?",
+    "logout": "Sair"
+  },
+  
+  "settings": {
+    "title": "Configurações",
+    "account": "Conta",
+    "preferences": "Preferências",
+    "language": "Idioma",
+    "theme": "Tema",
+    "notifications": "Notificações",
+    "privacy": "Privacidade",
+    "about": "Sobre",
+    "version": "Versão"
+  },
+  
+  "annotations": {
+    "title": "Anotações",
+    "addAnnotation": "Adicionar Anotação",
+    "editAnnotation": "Editar Anotação",
+    "deleteAnnotation": "Excluir Anotação",
+    "annotationTypes": {
+      "comment": "Comentário",
+      "note": "Nota",
+      "highlight": "Destacar",
+      "question": "Pergunta"
+    },
+    "priority": {
+      "low": "Baixa",
+      "medium": "Média",
+      "high": "Alta"
+    },
+    "resolved": "Resolvido",
+    "open": "Aberto",
+    "total": "Total",
+    "noAnnotations": "Ainda não há anotações",
+    "selectTextHint": "Selecione texto no documento para adicionar anotações"
+  },
+  
+  "search": {
+    "title": "Buscar",
+    "placeholder": "Buscar documentos...",
+    "noResults": "Nenhum resultado encontrado",
+    "recentSearches": "Buscas Recentes",
+    "filters": "Filtros",
+    "filterByDate": "Filtrar por Data",
+    "filterByType": "Filtrar por Tipo",
+    "filterBySeverity": "Filtrar por Severidade"
+  },
+  
+  "comparison": {
+    "title": "Comparar Documentos",
+    "selectDocuments": "Selecione dois documentos para comparar",
+    "document1": "Documento 1",
+    "document2": "Documento 2",
+    "compare": "Comparar",
+    "differences": "Diferenças",
+    "additions": "Adições",
+    "deletions": "Exclusões",
+    "noDifferences": "Nenhuma diferença encontrada"
+  },
+  
+  "templates": {
+    "title": "Modelos",
+    "nda": "Acordo de Confidencialidade",
+    "employmentAgreement": "Contrato de Trabalho",
+    "serviceContract": "Contrato de Serviço",
+    "privacyPolicy": "Política de Privacidade",
+    "termsOfService": "Termos de Serviço",
+    "leaseAgreement": "Contrato de Locação",
+    "preview": "Visualizar",
+    "useTemplate": "Usar Modelo",
+    "customize": "Personalizar"
+  },
+  
+  "sharing": {
+    "title": "Compartilhar Análise",
+    "generateLink": "Gerar Link",
+    "linkExpires": "Link Expira",
+    "passwordProtection": "Proteção por Senha",
+    "copyLink": "Copiar Link",
+    "shareViaEmail": "Compartilhar por Email",
+    "qrCode": "Código QR"
+  },
+  
+  "cloudStorage": {
+    "title": "Armazenamento na Nuvem",
+    "connectAccount": "Conectar Conta",
+    "googleDrive": "Google Drive",
+    "dropbox": "Dropbox",
+    "oneDrive": "OneDrive",
+    "connected": "Conectado",
+    "disconnect": "Desconectar",
+    "browseFiles": "Navegar Arquivos",
+    "syncSettings": "Configurações de Sincronização"
+  },
+  
+  "offline": {
+    "offlineMode": "Modo Offline",
+    "offlineMessage": "Você está offline no momento. Alguns recursos podem estar limitados.",
+    "syncPending": "Sincronizar Alterações Pendentes",
+    "lastSynced": "Última Sincronização"
+  },
+  
+  "team": {
+    "title": "Espaço da Equipe",
+    "createTeam": "Criar Equipe",
+    "joinTeam": "Entrar na Equipe",
+    "teamMembers": "Membros da Equipe",
+    "inviteMember": "Convidar Membro",
+    "teamDocuments": "Documentos da Equipe",
+    "roles": {
+      "admin": "Admin",
+      "member": "Membro",
+      "viewer": "Visualizador"
+    }
+  },
+  
+  "reminders": {
+    "title": "Lembretes",
+    "addReminder": "Adicionar Lembrete",
+    "contractDeadline": "Prazo do Contrato",
+    "renewalDate": "Data de Renovação",
+    "expirationDate": "Data de Expiração",
+    "notificationTime": "Hora de Notificação",
+    "noReminders": "Nenhum lembrete definido"
+  },
+  
+  "common": {
+    "loading": "Carregando...",
+    "error": "Erro",
+    "success": "Sucesso",
+    "cancel": "Cancelar",
+    "save": "Salvar",
+    "delete": "Excluir",
+    "edit": "Editar",
+    "done": "Concluído",
+    "next": "Próximo",
+    "previous": "Anterior",
+    "close": "Fechar",
+    "confirm": "Confirmar",
+    "retry": "Tentar Novamente",
+    "yes": "Sim",
+    "no": "Não",
+    "ok": "OK"
+  },
+  
+  "errors": {
+    "generic": "Algo deu errado",
+    "networkError": "Erro de rede. Verifique sua conexão.",
+    "authError": "Falha na autenticação",
+    "permissionDenied": "Permissão negada",
+    "fileNotFound": "Arquivo não encontrado",
+    "invalidFile": "Formato de arquivo inválido",
+    "analysisFailed": "Análise falhou. Tente novamente."
+  }
+}
